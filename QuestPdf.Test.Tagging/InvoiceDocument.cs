@@ -30,7 +30,7 @@ namespace QuestPdf.Test.Tagging
                 {
                     row.RelativeItem().Column(column =>
                     {
-                        column.Item().SemanticHeader1().Text(_model.Seller.Name).FontSize(20).SemiBold();
+                        column.Item().SemanticHeader1().Text(_model.Seller.Name).FontSize(20).SemiBold();   // headers do have alternate text set automatically, which produces a quality warning (see https://pac.pdf-accessibility.org/en/resources/pac-2024-quality-checks/alternative-text-on-text-elements)
                         column.Item().SemanticParagraph().Text(_model.Seller.Address);
                         column.Item().SemanticParagraph().Text($"Phone: {_model.Seller.Contact}");
                         column.Item().SemanticParagraph().SemanticLink("Email").Text(_model.Seller.Email);
