@@ -17,6 +17,8 @@ namespace QuestPdf.Test.Tagging
 
         public DocumentMetadata GetMetadata() => new() { Title = "Invoice Example", Language = "en-US" };
 
+        public DocumentSettings GetSettings() => new() { PDFA_Conformance = PDFA_Conformance.PDFA_3A, PDFUA_Conformance = PDFUA_Conformance.PDFUA_1 };
+
         public void Compose(IDocumentContainer container)
         {
             container.Page(page =>
