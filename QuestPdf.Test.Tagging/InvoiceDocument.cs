@@ -63,12 +63,12 @@ namespace QuestPdf.Test.Tagging
                         });
                     });
 
-                    column.Item().ArtifactLayout().PaddingVertical(10).LineHorizontal(1);
+                    column.Item().PaddingVertical(10).LineHorizontal(1);    // automatically adds layout artifact (very nice)
 
                     // Table
                     column.Item().Table(table =>
                     {
-                        table.ApplySemanticTags(); // Something seems to be missing here (maybe reference to headers ids: https://support.axes4.com/hc/en-us/articles/7371462228370-Table-header-cell-has-no-associated-subcells) 
+                        table.ApplySemanticTags();
 
                         table.ColumnsDefinition(columns =>
                         {
@@ -95,7 +95,7 @@ namespace QuestPdf.Test.Tagging
                         }
                     });
 
-                    column.Item().ArtifactLayout().PaddingVertical(10).LineHorizontal(1);
+                    column.Item().PaddingVertical(10).LineHorizontal(1);
 
                     // Totals
                     var subtotal = 0m;
