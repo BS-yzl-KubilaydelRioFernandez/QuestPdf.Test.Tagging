@@ -33,7 +33,7 @@ namespace QuestPdf.Test.Tagging
                         column.Item().SemanticHeader1().Text(_model.Seller.Name).FontSize(20).SemiBold();
                         column.Item().SemanticParagraph().Text(_model.Seller.Address);
                         column.Item().SemanticParagraph().Text($"Phone: {_model.Seller.Contact}");
-                        column.Item().SemanticParagraph().Text(_model.Seller.Email);
+                        column.Item().SemanticParagraph().SemanticLink("Email").Text(_model.Seller.Email);
                     });
 
                     row.ConstantItem(100).ArtifactOther().Height(60)
@@ -54,7 +54,7 @@ namespace QuestPdf.Test.Tagging
                             column.Item().SemanticParagraph().Text(_model.Customer.Name);
                             column.Item().SemanticParagraph().Text(_model.Customer.Address);
                             column.Item().SemanticParagraph().Text(_model.Customer.Contact);
-                            column.Item().SemanticParagraph().Text(_model.Customer.Email);
+                            column.Item().SemanticParagraph().SemanticLink("Email").Text(_model.Customer.Email);
                         });
 
                         row.RelativeItem().SemanticSection().Column(column =>
