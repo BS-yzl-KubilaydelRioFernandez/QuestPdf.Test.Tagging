@@ -17,7 +17,7 @@ namespace QuestPdf.Test.Tagging
 
         public DocumentMetadata GetMetadata() => new() { Title = "Invoice Example", Language = "en-US" };
 
-        public DocumentSettings GetSettings() => new() { PDFA_Conformance = PDFA_Conformance.PDFA_3A, PDFUA_Conformance = PDFUA_Conformance.PDFUA_1 };
+        public DocumentSettings GetSettings() => new() { PDFA_Conformance = PDFA_Conformance.PDFA_2A, PDFUA_Conformance = PDFUA_Conformance.PDFUA_1 };
 
         public void Compose(IDocumentContainer container)
         {
@@ -31,9 +31,9 @@ namespace QuestPdf.Test.Tagging
                     row.RelativeItem().Column(column =>
                     {
                         column.Item().SemanticHeader1().Text(_model.Seller.Name).FontSize(20).SemiBold();   // headers do have alternate text set automatically, which produces a quality warning (see https://pac.pdf-accessibility.org/en/resources/pac-2024-quality-checks/alternative-text-on-text-elements)
-                        column.Item().SemanticParagraph().Text(_model.Seller.Address);
-                        column.Item().SemanticParagraph().Text($"Phone: {_model.Seller.Contact}");
-                        column.Item().SemanticParagraph().SemanticLink("Email").Text(_model.Seller.Email);
+                        column.Item().Text(_model.Seller.Address);
+                        column.Item().Text($"Phone: {_model.Seller.Contact}");
+                        column.Item().SemanticLink("Email").Text(_model.Seller.Email);
                     });
 
                     row.ConstantItem(100).ArtifactOther().Height(60)
@@ -50,18 +50,18 @@ namespace QuestPdf.Test.Tagging
                         row.RelativeItem().SemanticSection().Column(column =>
                         {
                             // Maybe automatic tagging for Text or new element in API?
-                            column.Item().SemanticParagraph().Text("Invoice to:").SemiBold();
-                            column.Item().SemanticParagraph().Text(_model.Customer.Name);
-                            column.Item().SemanticParagraph().Text(_model.Customer.Address);
-                            column.Item().SemanticParagraph().Text(_model.Customer.Contact);
-                            column.Item().SemanticParagraph().SemanticLink("Email").Text(_model.Customer.Email);
+                            column.Item().SemanticHeader2().Text("Invoice to:").SemiBold();
+                            column.Item().Text(_model.Customer.Name);
+                            column.Item().Text(_model.Customer.Address);
+                            column.Item().Text(_model.Customer.Contact);
+                            column.Item().SemanticLink("Email").Text(_model.Customer.Email);
                         });
 
                         row.RelativeItem().SemanticSection().Column(column =>
                         {
-                            column.Item().SemanticParagraph().Text($"Invoice: {_model.InvoiceNumber}").SemiBold();
-                            column.Item().SemanticParagraph().Text($"Date: {_model.IssueDate:dd.MM.yyyy}");
-                            column.Item().SemanticParagraph().Text($"Due by: {_model.DueDate:dd.MM.yyyy}");
+                            column.Item().SemanticHeader2().Text($"Invoice: {_model.InvoiceNumber}").SemiBold();
+                            column.Item().Text($"Date: {_model.IssueDate:dd.MM.yyyy}");
+                            column.Item().Text($"Due by: {_model.DueDate:dd.MM.yyyy}");
                         });
                     });
 
@@ -112,15 +112,15 @@ namespace QuestPdf.Test.Tagging
                     column.Item().SemanticSection().AlignRight().Column(column =>
                     {
                         column.Spacing(2);
-                        column.Item().SemanticParagraph().Text($"Subtotal: {subtotal:C}");
-                        column.Item().SemanticParagraph().Text($"VAT ({_model.TaxRate:P0}): {tax:C}");
-                        column.Item().SemanticParagraph().Text($"Total Amount: {total:C}").Bold().FontSize(14);
+                        column.Item().Text($"Subtotal: {subtotal:C}");
+                        column.Item().Text($"VAT ({_model.TaxRate:P0}): {tax:C}");
+                        column.Item().Text($"Total Amount: {total:C}").Bold().FontSize(14);
                     });
 
                     // Notes
                     if (!string.IsNullOrWhiteSpace(_model.PaymentTerms) || !string.IsNullOrWhiteSpace(_model.Notes))
                     {
-                        column.Item().SemanticParagraph().PaddingTop(20).Column(column =>
+                        column.Item().PaddingTop(20).Column(column =>
                         {
                             if (!string.IsNullOrWhiteSpace(_model.PaymentTerms))
                             {
@@ -136,7 +136,7 @@ namespace QuestPdf.Test.Tagging
                 });
 
                 // Footer
-                page.Footer().SemanticParagraph().AlignCenter().Text(text =>
+                page.Footer().AlignCenter().Text(text =>
                 {
                     text.Span("Thank you for your trust!").Italic();
                 });
