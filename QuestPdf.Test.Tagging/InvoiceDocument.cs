@@ -17,7 +17,7 @@ namespace QuestPdf.Test.Tagging
 
         public DocumentMetadata GetMetadata() => new() { Title = "Invoice Example", Language = "en-US" };
 
-        public DocumentSettings GetSettings() => new() { PDFA_Conformance = PDFA_Conformance.PDFA_2A, PDFUA_Conformance = PDFUA_Conformance.PDFUA_1 };
+        public DocumentSettings GetSettings() => new() { PDFA_Conformance = PDFA_Conformance.PDFA_1A };
 
         public void Compose(IDocumentContainer container)
         {
@@ -30,13 +30,13 @@ namespace QuestPdf.Test.Tagging
                 {
                     row.RelativeItem().Column(column =>
                     {
-                        column.Item().SemanticHeader1().Text(_model.Seller.Name).FontSize(20).SemiBold();   // headers do have alternate text set automatically, which produces a quality warning (see https://pac.pdf-accessibility.org/en/resources/pac-2024-quality-checks/alternative-text-on-text-elements)
+                        column.Item().SemanticHeader1().Text(_model.Seller.Name).FontSize(20).SemiBold();
                         column.Item().Text(_model.Seller.Address);
                         column.Item().Text($"Phone: {_model.Seller.Contact}");
-                        column.Item().SemanticLink("Email").Text(_model.Seller.Email);
+                        column.Item().SemanticLink("Email").Hyperlink(_model.Seller.Email);
                     });
 
-                    row.ConstantItem(100).ArtifactOther().Height(60)
+                    row.ConstantItem(100).SemanticIgnore().Height(60)
                         .Background(Colors.Grey.Lighten3).AlignCenter().AlignMiddle()
                         .Text("LOGO").FontSize(14);
                 });
@@ -49,12 +49,11 @@ namespace QuestPdf.Test.Tagging
                     {
                         row.RelativeItem().SemanticSection().Column(column =>
                         {
-                            // Maybe automatic tagging for Text or new element in API?
                             column.Item().SemanticHeader2().Text("Invoice to:").SemiBold();
                             column.Item().Text(_model.Customer.Name);
                             column.Item().Text(_model.Customer.Address);
                             column.Item().Text(_model.Customer.Contact);
-                            column.Item().SemanticLink("Email").Text(_model.Customer.Email);
+                            column.Item().SemanticLink("Email").Hyperlink(_model.Customer.Email);
                         });
 
                         row.RelativeItem().SemanticSection().Column(column =>
@@ -65,13 +64,11 @@ namespace QuestPdf.Test.Tagging
                         });
                     });
 
-                    column.Item().PaddingVertical(10).LineHorizontal(1);    // automatically adds layout artifact (very nice)
+                    column.Item().PaddingVertical(10).LineHorizontal(1);
 
                     // Table
-                    column.Item().Table(table =>
+                    column.Item().SemanticTable().Table(table =>
                     {
-                        table.ApplySemanticTags();
-
                         table.ColumnsDefinition(columns =>
                         {
                             columns.RelativeColumn(6);
